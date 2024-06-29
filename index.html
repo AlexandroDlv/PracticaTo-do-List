@@ -1,0 +1,82 @@
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lista de Tareas</title>
+        <link rel="stylesheet" href="estilos.css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="script.js"></script>
+    </head>
+
+<body>
+
+    <div class="container">
+        <h1>Lista de Tareas</h1>
+        <form id="taskForm">
+            <input type="text" id="taskInput" placeholder="Añadir nueva tarea..." required>
+            <button type="submit">Agregar Tarea</button>
+        </form>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const taskForm = document.getElementById('taskForm');
+            const taskInput = document.getElementById('taskInput');
+            const taskList = document.getElementById('taskList');
+
+            // Función para agregar una tarea
+            taskForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const taskText = taskInput.value.trim();
+                if (taskText !== '') {
+                    addTask(taskText);
+                    taskInput.value = '';
+                }
+            });
+
+            // Función para marcar como completada o eliminar una tarea
+            taskList.addEventListener('click', function(event) {
+                if (event.target.tagName === 'BUTTON') {
+                    const taskItem = event.target.closest('li');
+                    if (event.target.classList.contains('delete-btn')) {
+                        taskItem.remove();
+                    } else if (event.target.classList.contains('complete-btn')) {
+                        taskItem.classList.toggle('completed');
+                    }
+                }
+            });
+
+            // Función para agregar una tarea a la lista
+            function addTask(taskText) {
+            const taskItem = document.createElement('li');
+            taskItem.classList.add('task-item');
+
+            const taskContent = document.createElement('div');
+            taskContent.textContent = taskText;
+            taskContent.classList.add('task-content');
+
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.classList.add('buttons');
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Eliminar';
+            deleteButton.classList.add('delete-btn', 'btn', 'btn-outline-danger');
+
+            const completeButton = document.createElement('button');
+            completeButton.textContent = 'Completar';
+            completeButton.classList.add('complete-btn', 'btn', 'btn-outline-primary');
+
+            buttonsContainer.appendChild(deleteButton);
+            buttonsContainer.appendChild(completeButton);
+
+            taskItem.appendChild(taskContent);
+            taskItem.appendChild(buttonsContainer);
+
+            taskList.appendChild(taskItem);
+            }
+        });
+    </script>
+
+</body>
+</html>
